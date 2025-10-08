@@ -1,0 +1,94 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 340 10% 20%;
+    
+    --card: 0 0% 100%;
+    --card-foreground: 340 10% 20%;
+    
+    --popover: 0 0% 100%;
+    --popover-foreground: 340 10% 20%;
+    
+    --primary: 340 75% 55%;
+    --primary-foreground: 0 0% 100%;
+    --primary-glow: 340 85% 70%;
+    
+    --secondary: 25 65% 70%;
+    --secondary-foreground: 340 10% 20%;
+    
+    --muted: 30 25% 95%;
+    --muted-foreground: 340 10% 45%;
+    
+    --accent: 280 40% 70%;
+    --accent-foreground: 0 0% 100%;
+    
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    
+    --border: 30 20% 90%;
+    --input: 30 20% 90%;
+    --ring: 340 75% 55%;
+    
+    --radius: 0.5rem;
+    
+    --gradient-primary: linear-gradient(135deg, hsl(340 75% 55%), hsl(340 85% 70%));
+    --gradient-subtle: linear-gradient(180deg, hsl(0 0% 100%), hsl(30 25% 98%));
+    --gradient-hero: linear-gradient(135deg, hsl(25 65% 70% / 0.15), hsl(340 75% 55% / 0.15));
+    
+    --shadow-elegant: 0 10px 30px -10px hsl(340 75% 55% / 0.3);
+    --shadow-soft: 0 4px 20px -4px hsl(340 40% 30% / 0.15);
+    
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .dark {
+    --background: 340 15% 10%;
+    --foreground: 30 10% 95%;
+    
+    --card: 340 12% 15%;
+    --card-foreground: 30 10% 95%;
+    
+    --popover: 340 12% 15%;
+    --popover-foreground: 30 10% 95%;
+    
+    --primary: 340 75% 60%;
+    --primary-foreground: 0 0% 100%;
+    --primary-glow: 340 85% 75%;
+    
+    --secondary: 25 50% 55%;
+    --secondary-foreground: 0 0% 100%;
+    
+    --muted: 340 12% 20%;
+    --muted-foreground: 30 10% 70%;
+    
+    --accent: 280 35% 60%;
+    --accent-foreground: 0 0% 100%;
+    
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    
+    --border: 340 12% 25%;
+    --input: 340 12% 25%;
+    --ring: 340 75% 60%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Montserrat', sans-serif;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Cormorant', serif;
+    font-weight: 600;
+  }
+}

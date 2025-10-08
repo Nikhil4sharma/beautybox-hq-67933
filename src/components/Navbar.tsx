@@ -1,8 +1,11 @@
 import { Link } from 'react-router-dom';
-import { ShoppingBag, User, Menu } from 'lucide-react';
+import { ShoppingBag, User, Menu, Moon, Sun, Search } from 'lucide-react';
 import { Button } from './ui/button';
 import { useCart } from '@/contexts/CartContext';
 import { useAuth } from '@/contexts/AuthContext';
+import { useTheme } from '@/contexts/ThemeContext';
+import { useState } from 'react';
+import { Sheet, SheetContent, SheetTrigger } from './ui/sheet';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,8 +16,32 @@ import {
 export const Navbar = () => {
   const { cart } = useCart();
   const { user, logout, isAdmin } = useAuth();
+  const { theme, toggleTheme } = useTheme();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   
   const cartItemsCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+
+  const NavLinks = () => (
+    <>
+      <Link to="/products" className="text-foreground hover:text-primary transition-colors">
+        Products
+      </Link>
+      <Link to="/my-orders" className="text-foreground hover:text-primary transition-colors">
+        My Orders
+      </Link>
+      <Link to="/about" className="text-foreground hover:text-primary transition-colors">
+        About
+      </Link>
+      <Link to="/faq" className="text-foreground hover:text-primary transition-colors">
+        FAQ
+      </Link>
+      {isAdmin && (
+        <Link to="/admin" className="text-foreground hover:text-primary transition-colors">
+          Admin
+        </Link>
+      )}
+    </>
+  );
 
   return (
     <nav className="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border">
@@ -25,20 +52,23 @@ export const Navbar = () => {
           </Link>
 
           <div className="hidden md:flex items-center gap-8">
-            <Link to="/products" className="text-foreground hover:text-primary transition-colors">
-              Products
-            </Link>
-            <Link to="/about" className="text-foreground hover:text-primary transition-colors">
-              About
-            </Link>
-            {isAdmin && (
-              <Link to="/admin" className="text-foreground hover:text-primary transition-colors">
-                Admin
-              </Link>
-            )}
+            <NavLinks />
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={toggleTheme}
+              aria-label="Toggle theme"
+            >
+              {theme === 'light' ? (
+                <Moon className="h-5 w-5" />
+              ) : (
+                <Sun className="h-5 w-5" />
+              )}
+            </Button>
+
             <Link to="/cart">
               <Button variant="ghost" size="icon" className="relative">
                 <ShoppingBag className="h-5 w-5" />
@@ -60,7 +90,7 @@ export const Navbar = () => {
                 {user ? (
                   <>
                     <DropdownMenuItem asChild>
-                      <Link to="/profile">Profile</Link>
+                      <Link to="/my-orders">My Orders</Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={logout}>
                       Logout
@@ -74,9 +104,18 @@ export const Navbar = () => {
               </DropdownMenuContent>
             </DropdownMenu>
 
-            <Button variant="ghost" size="icon" className="md:hidden">
-              <Menu className="h-5 w-5" />
-            </Button>
+            <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon" className="md:hidden">
+                  <Menu className="h-5 w-5" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="right" className="w-64">
+                <div className="flex flex-col gap-6 mt-8">
+                  <NavLinks />
+                </div>
+              </SheetContent>
+            </Sheet>
           </div>
         </div>
       </div>

@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { Navbar } from '@/components/Navbar';
+import { Footer } from '@/components/Footer';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { mockProducts } from '@/lib/mockData';
 import { useCart } from '@/contexts/CartContext';
-import { ShoppingBag } from 'lucide-react';
+import { ShoppingBag, Search } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Link } from 'react-router-dom';
 
@@ -12,12 +14,17 @@ const Products = () => {
   const { addToCart } = useCart();
   const { toast } = useToast();
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
+  const [searchQuery, setSearchQuery] = useState('');
 
   const categories = ['All', ...Array.from(new Set(mockProducts.map(p => p.category)))];
   
-  const filteredProducts = selectedCategory === 'All' 
-    ? mockProducts 
-    : mockProducts.filter(p => p.category === selectedCategory);
+  const filteredProducts = mockProducts.filter(p => {
+    const matchesCategory = selectedCategory === 'All' || p.category === selectedCategory;
+    const matchesSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                          p.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                          p.category.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
 
   const handleAddToCart = (product: any) => {
     addToCart(product);
@@ -28,12 +35,25 @@ const Products = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background flex flex-col">
       <Navbar />
       
-      <div className="container mx-auto px-4 py-12">
+      <div className="container mx-auto px-4 py-12 flex-1">
         <h1 className="text-4xl font-bold mb-8">Our Products</h1>
         
+        <div className="mb-6">
+          <div className="relative max-w-md">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+            <Input
+              type="text"
+              placeholder="Search products..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-10"
+            />
+          </div>
+        </div>
+
         <div className="flex gap-2 mb-8 flex-wrap">
           {categories.map(category => (
             <Button
@@ -65,7 +85,7 @@ const Products = () => {
                     <h3 className="font-semibold mb-2 hover:text-primary transition-colors">{product.name}</h3>
                   </Link>
                   <div className="flex items-center justify-between">
-                    <span className="text-xl font-bold text-primary">${product.price}</span>
+                    <span className="text-xl font-bold text-primary">₹{product.price}</span>
                     <Button 
                       onClick={() => handleAddToCart(product)}
                       size="sm"
@@ -79,6 +99,8 @@ const Products = () => {
           ))}
         </div>
       </div>
+      
+      <Footer />
     </div>
   );
 };

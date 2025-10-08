@@ -75,8 +75,8 @@ const Cart = () => {
                       </div>
                     </div>
                     <div className="text-right">
-                      <p className="font-bold text-lg">${(item.price * item.quantity).toFixed(2)}</p>
-                      <p className="text-sm text-muted-foreground">${item.price} each</p>
+                      <p className="font-bold text-lg">₹{(item.price * item.quantity).toFixed(2)}</p>
+                      <p className="text-sm text-muted-foreground">₹{item.price} each</p>
                     </div>
                   </div>
                 </CardContent>
@@ -91,7 +91,7 @@ const Cart = () => {
                 <div className="space-y-2 mb-4">
                   <div className="flex justify-between">
                     <span>Subtotal</span>
-                    <span>${cartTotal.toFixed(2)}</span>
+                    <span>₹{cartTotal.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between">
                     <span>Shipping</span>
@@ -99,7 +99,7 @@ const Cart = () => {
                   </div>
                   <div className="border-t pt-2 flex justify-between font-bold text-lg">
                     <span>Total</span>
-                    <span>${cartTotal.toFixed(2)}</span>
+                    <span>₹{cartTotal.toFixed(2)}</span>
                   </div>
                 </div>
                 <Link to="/checkout">
